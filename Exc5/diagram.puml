@@ -1,0 +1,30 @@
+@startuml
+
+actor User
+participant "Mes App" as Client
+participant "Mes API" as API
+participant Cache
+participant "Order Service" as Service
+
+User -> Client: Запрос списка заказов
+Client -> API: Запрос списка заказов
+API -> Cache: Запрос списка заказов
+Cache -> API: Вернуть кешированные заказы
+API -> Client: Вернуть кешированные заказы
+
+== ==
+
+User -> Client: Выбрать заказ
+Client -> API: Выбрать заказ
+API -> Cache: Выбрать заказ
+Cache -> Service: Выбрать заказ
+Service -> Cache: Инвалидировать элемент по ключу
+Cache -> API: Подтвердить выбор заказа
+API -> Client: Подтвердить выбор заказа
+Client -> User: Подтвердить выбор заказа
+
+== ==
+
+Service -> Cache: Добавить/инвалидировать заказ
+
+@enduml
